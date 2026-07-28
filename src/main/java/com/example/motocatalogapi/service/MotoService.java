@@ -1,8 +1,9 @@
-package com.example.mamotoapi.service;
+package com.example.motocatalogapi.service;
 
-import com.example.mamotoapi.model.Moto;
-import com.example.mamotoapi.model.StatusMoto;
-import com.example.mamotoapi.repository.MotoRepository;
+import com.example.motocatalogapi.model.CategoriaMoto;
+import com.example.motocatalogapi.model.Moto;
+import com.example.motocatalogapi.model.StatusMoto;
+import com.example.motocatalogapi.repository.MotoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,14 +21,28 @@ public class MotoService {
         return motoRepository.findAll();
     }
 
-    public List<Moto> listarDisponiveis() {
-        return motoRepository.findByStatus(StatusMoto.DISPONIVEL);
+    public List<Moto> listarDisponiveis(
+            CategoriaMoto categoria,
+            Integer anoMinimo,
+            Integer anoMaximo,
+            Integer cilindradaMinima,
+            Integer cilindradaMaxima
+    ) {
+        return motoRepository.filtrarCatalogo(
+                StatusMoto.DISPONIVEL,
+                categoria,
+                anoMinimo,
+                anoMaximo,
+                cilindradaMinima,
+                cilindradaMaxima
+        );
     }
 
     public Moto buscarPorId(Long id) {
         return motoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Moto não encontrada"));
     }
+
 
     public Moto cadastrar(Moto moto) {
         if (moto.getStatus() == null) {
@@ -49,6 +64,8 @@ public class MotoService {
         moto.setCor(dadosAtualizados.getCor());
         moto.setDescricao(dadosAtualizados.getDescricao());
         moto.setImagemUrl(dadosAtualizados.getImagemUrl());
+        moto.setTelefoneVendedor(dadosAtualizados.getTelefoneVendedor());
+        moto.setCategoria(dadosAtualizados.getCategoria());
         moto.setStatus(dadosAtualizados.getStatus());
 
         return motoRepository.save(moto);
@@ -58,6 +75,7 @@ public class MotoService {
         Moto moto = buscarPorId(id);
         motoRepository.delete(moto);
     }
+
 
     public Moto marcarComoVendida(Long id) {
         Moto moto = buscarPorId(id);

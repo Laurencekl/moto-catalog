@@ -1,4 +1,4 @@
-package com.example.mamotoapi;
+package com.example.motocatalogapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

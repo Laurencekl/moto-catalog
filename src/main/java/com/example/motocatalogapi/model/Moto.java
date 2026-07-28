@@ -1,4 +1,4 @@
-package com.example.mamotoapi.model;
+package com.example.motocatalogapi.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,6 +29,12 @@ public class Moto {
 
     private String imagemUrl;
 
+    private String telefoneVendedor;
+
+    @Enumerated(EnumType.STRING)
+    private CategoriaMoto categoria;
+
     @Enumerated(EnumType.STRING)
     private StatusMoto status;
+
 }

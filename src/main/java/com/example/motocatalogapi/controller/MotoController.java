@@ -1,7 +1,8 @@
-package com.example.mamotoapi.controller;
+package com.example.motocatalogapi.controller;
 
-import com.example.mamotoapi.model.Moto;
-import com.example.mamotoapi.service.MotoService;
+import com.example.motocatalogapi.model.CategoriaMoto;
+import com.example.motocatalogapi.model.Moto;
+import com.example.motocatalogapi.service.MotoService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,14 +18,27 @@ public class MotoController {
         this.motoService = motoService;
     }
 
+
     @GetMapping
     public List<Moto> listarTodas() {
         return motoService.listarTodas();
     }
 
     @GetMapping("/disponiveis")
-    public List<Moto> listarDisponiveis() {
-        return motoService.listarDisponiveis();
+    public List<Moto> listarDisponiveis(
+            @RequestParam(required = false) CategoriaMoto categoria,
+            @RequestParam(required = false) Integer anoMinimo,
+            @RequestParam(required = false) Integer anoMaximo,
+            @RequestParam(required = false) Integer cilindradaMinima,
+            @RequestParam(required = false) Integer cilindradaMaxima
+    ) {
+        return motoService.listarDisponiveis(
+                categoria,
+                anoMinimo,
+                anoMaximo,
+                cilindradaMinima,
+                cilindradaMaxima
+        );
     }
 
     @GetMapping("/{id}")
