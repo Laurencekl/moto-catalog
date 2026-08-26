@@ -4,6 +4,7 @@ import com.example.motocatalogapi.model.CategoriaMoto;
 import com.example.motocatalogapi.model.Moto;
 import com.example.motocatalogapi.service.MotoService;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -47,12 +48,17 @@ public class MotoController {
     }
 
     @PostMapping
-    public Moto cadastrar(@RequestBody Moto moto) {
+    public Moto cadastrar(
+            @Valid @RequestBody Moto moto
+    ) {
         return motoService.cadastrar(moto);
     }
 
     @PutMapping("/{id}")
-    public Moto atualizar(@PathVariable Long id, @RequestBody Moto moto) {
+    public Moto atualizar(
+            @PathVariable Long id,
+            @Valid @RequestBody Moto moto
+    ) {
         return motoService.atualizar(id, moto);
     }
 
