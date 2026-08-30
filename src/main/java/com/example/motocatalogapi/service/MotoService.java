@@ -1,5 +1,5 @@
 package com.example.motocatalogapi.service;
-
+import com.example.motocatalogapi.exception.MotoNaoEncontradaException;
 import com.example.motocatalogapi.model.CategoriaMoto;
 import com.example.motocatalogapi.model.Moto;
 import com.example.motocatalogapi.model.StatusMoto;
@@ -40,9 +40,8 @@ public class MotoService {
 
     public Moto buscarPorId(Long id) {
         return motoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Moto não encontrada"));
+                .orElseThrow(() -> new MotoNaoEncontradaException(id));
     }
-
 
     public Moto cadastrar(Moto moto) {
         if (moto.getStatus() == null) {
@@ -75,7 +74,6 @@ public class MotoService {
         Moto moto = buscarPorId(id);
         motoRepository.delete(moto);
     }
-
 
     public Moto marcarComoVendida(Long id) {
         Moto moto = buscarPorId(id);
