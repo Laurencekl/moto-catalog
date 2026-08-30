@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 
 @Configuration
@@ -28,7 +29,8 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return email -> adminRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Admin não encontrado"));
+                .orElseThrow(() ->
+                        new UsernameNotFoundException("E-mail ou senha inválidos"));
     }
 
     @Bean
@@ -38,9 +40,9 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        DaoAuthenticationProvider provider =
+                new DaoAuthenticationProvider(userDetailsService());
 
-        provider.setUserDetailsService(userDetailsService());
         provider.setPasswordEncoder(passwordEncoder());
 
         return provider;
